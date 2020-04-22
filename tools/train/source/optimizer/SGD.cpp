@@ -34,16 +34,12 @@ float SGD::currentLearningRate() {
     return mLearningRate;
 }
 
-void SGD::onAppend(const std::set<Express::VARP>& parameters) {
-    for (auto p : parameters) {
-        mHistory[p] = _Const(0.0f, p->getInfo()->dim, p->getInfo()->order);
-    }
+void SGD::onAppend(Express::VARP p) {
+    mHistory[p] = _Const(0.0f, p->getInfo()->dim, p->getInfo()->order);
 }
 
-void SGD::onRemove(const std::set<Express::VARP>& parameters) {
-    for (auto p : parameters) {
-        mHistory.erase(p);
-    }
+void SGD::onRemove(Express::VARP p) {
+    mHistory.erase(p);
 }
 
 Express::VARP SGD::regularizeParameters(Express::VARP param, Express::VARP grad) {
@@ -61,13 +57,13 @@ Express::VARP SGD::regularizeParameters(Express::VARP param, Express::VARP grad)
 Express::VARP SGD::onComputeUpdateValue(Express::VARP param, Express::VARP grad) {
     auto lr         = _Const(mLearningRate, {}, NCHW);
     mHistory[param] = lr * grad + _Const(mMomentum, {}, NCHW) * mHistory[param];
-    mHistory[param].fix(Express::VARP::CONST);
-
+    mHistory[param].fix(Express::VARP::CONSTANT);
+    //FUNC_PRINT_ALL(_ReduceMax(grad)->readMap<float>()[0], f);
     return mHistory[param];
 }
 
 std::map<Express::VARP, Express::VARP> SGD::onGetNextParameter(Express::VARP loss) {
-    auto grad = OpGrad::grad(loss, parameters());
+    auto grad = OpGrad::grad(loss, parameters(), mGradBlockExprName);
     std::vector<VARP> prepareCompute;
     for (auto& iter : grad) {
         prepareCompute.emplace_back(iter.second);
@@ -77,7 +73,7 @@ std::map<Express::VARP, Express::VARP> SGD::onGetNextParameter(Express::VARP los
     for (auto& iter : grad) {
         // apply regularization
         auto addWeightDecayGrad = regularizeParameters(iter.first, iter.second);
-        addWeightDecayGrad.fix(Express::VARP::CONST);
+        addWeightDecayGrad.fix(Express::VARP::CONSTANT);
         // apply momentum, etc.
         auto updateValue = this->onComputeUpdateValue(iter.first, addWeightDecayGrad);
         // apply update

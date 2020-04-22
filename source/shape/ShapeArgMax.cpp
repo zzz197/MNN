@@ -11,9 +11,6 @@
 
 namespace MNN {
 
-// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-// Size Computer
-// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 class ArgMaxComputer : public SizeComputer {
     virtual bool onComputeSize(const MNN::Op *op, const std::vector<Tensor *> &inputs,
                                const std::vector<Tensor *> &outputs) const override {
@@ -52,6 +49,7 @@ class ArgMaxComputer : public SizeComputer {
         } else {
             // Legacy code
             // key extent
+            output.type = halide_type_of<float>();
             int keyExtent = argMax->topK();
             if (argMax->outMaxVal()) {
                 keyExtent *= 2;
