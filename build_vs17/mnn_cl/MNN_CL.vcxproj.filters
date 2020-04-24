@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="源文件\core">
+      <UniqueIdentifier>{0e764229-b09d-4865-bd1a-a8c359974afd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\execution">
+      <UniqueIdentifier>{868854c0-96e1-4fd6-811b-3f2de0faa22f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\execution\cl">
+      <UniqueIdentifier>{ce789981-d625-47e1-8efe-cbc0e4064a8e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\backend\opencl\execution\BatchToSpaceExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\CommonExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\ConcatExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\Conv2DBackPropFilter.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\ConvertExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\ConvExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\ConvInt8Execution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\ConvWinograd.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\CropExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\DeconvExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\DepthwiseConvExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\DepthwiseConvInt8Execution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\DepthwiseDeconvExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\EltwiseExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\FloatToInt8Execution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\Int8ToFloatExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\InterpExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\LrnExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\MatmulExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\MultiInputConvExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\MultiInputDeconvExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\NormalizeExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\PermuteExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\PoolExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\PoolGradExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\ReductionExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\ReluExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\ReluGradExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\ReshapeExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\ResizeExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\RoiPoolingExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\ScaleExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\SliceExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\SoftmaxExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\SoftmaxGradExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\SpaceToBatchExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\SpatialProductExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\TrainableParamExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\UnaryExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\ZerosLikeExecution.cpp">
+      <Filter>源文件\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\execution\cl\opencl_program.cc">
+      <Filter>源文件\execution\cl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\core\BufferPool.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\core\ImageBufferConvertor.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\core\ImagePool.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\core\OpenCLBackend.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\core\OpenCLRunningUtils.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\core\runtime\OpenCLRuntime.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\opencl\core\runtime\OpenCLWrapper.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

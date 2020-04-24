@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{B0A4DC74-8D5B-46D7-9A6D-4E1358800B61}</ProjectGuid>
+    <RootNamespace>mnn</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <ProjectName>MNN</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\PropertySheet.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\PropertySheet.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>BUILDING_MNN_DLL;_CRT_SECURE_NO_WARNINGS;MNN_USE_THREAD_POOL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4244;4146;4018;4267;4996;4081;4251</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>BUILDING_MNN_DLL;_CRT_SECURE_NO_WARNINGS;MNN_USE_THREAD_POOL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4244;4146;4018;4267;4996;4081;4251</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\backend\cpu\compute\CommonOptFunction.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\Convolution1x1Strassen.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\Convolution3D3x3.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\compute\Convolution3x3.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvolutionDepthwise3x3.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvolutionFloatFactory.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvolutionGroup.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvolutionInt8Executor.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvolutionIntFactory.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvolutionTiledExecutor.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvolutionWinograd.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvolutionWinograd3D.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvOpt.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\DeconvolutionWithStride.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\Int8FunctionsOpt.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\OptimizedComputer.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ResizeFunction.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\StrassenMatmulComputor.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\WinogradOptFunction.cpp">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)compute\</ObjectFileName>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</AssemblerListingLocation>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)compute\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUArgMax.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUAsString.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUBackend.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUBatchMatMul.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUBatchToSpaceND.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUBinary.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUBroadcastTo.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUCast.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUConcat.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUConst.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUConv2DBackPropFilter.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUConvInt8.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUConvolution.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUConvolution3D.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUConvolutionDepthwise.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUCosineSimilarity.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUCrop.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUCropAndResize.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUDeconvolution.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUDeconvolutionDepthwise.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUDepthToSpace.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUDepthwiseConvInt8.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUDequantize.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUDetectionOutput.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUDetectionPostProcess.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUDilation2D.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUEltwise.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUEltwiseInt8.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUElu.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUExpandDims.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUFill.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUFloatToInt8.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUGather.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUGatherND.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUGatherV2.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUInnerProduct.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUInstanceNorm.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUInt8ToFloat.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUInterp.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPULinSpace.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPULRN.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPULSTM.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUMatMul.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUMatrixBandPart.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUMoments.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUNonMaxSuppressionV2.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUNormalize.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUOneHot.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUOPRegister.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUPack.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUPadding.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUPermute.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUPlugin.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUPool.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUPoolGrad.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUPoolInt8.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUPriorbox.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUProposal.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUQuanConvolutionDepthwise.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUQuantizedAdd.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUQuantizedAvgPool.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUQuantizedConcat.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUQuantizedLogistic.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUQuantizedMaxPool.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUQuantizedReshape.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUQuantizedSoftmax.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPURange.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPURank.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUReduceJoin.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUReduction.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPURelu.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUReluGrad.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUReshape.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUResize.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUReverseSequence.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPURNNSequenceGRU.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUROIPooling.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPURuntime.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUScale.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUScatterNd.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUSelect.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUSelu.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUSetDiff1D.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUShape.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUSigmoid.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUSize.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUSlice.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUSliceTf.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUSoftmax.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUSoftmaxGrad.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUSpaceToBatchND.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUSpaceToDepth.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUSpatialProduct.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUSqueeze.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUStridedSlice.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUTanh.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUTensorConvert.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUTFQuantizedConv2D.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUThreshold.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUTile.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUTopKV2.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUTranspose.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUUnary.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUUnpack.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUUnravelIndex.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUWhere.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\CPUZeroLike.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\ThreadPool.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\avx\CommonOptFunction.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)avx\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)avx\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\avx\MNNConvSlideWindowMiddle.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)avx\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)avx\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\avx\MNNGemmFloatCommon_4.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)avx\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)avx\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\avx\MNNMatrixAdd.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)avx\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)avx\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\avx\MNNMatrixSub.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)avx\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)avx\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\DispatchHelper.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\FunctionDispatcher.cpp" />
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\sse\CommonOptFunction.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)sse\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)sse\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\sse\MNNConvSlideWindowBorder.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)sse\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)sse\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\sse\MNNConvSlideWindowMiddle.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)sse\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)sse\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\sse\MNNGemmFloatCommon_4.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)sse\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)sse\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\sse\MNNMatrixAdd.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)sse\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)sse\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\sse\MNNMatrixSub.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)sse\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)sse\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\AutoTime.cpp" />
+    <ClCompile Include="..\..\source\core\Backend.cpp" />
+    <ClCompile Include="..\..\source\core\BackendFactory.cpp" />
+    <ClCompile Include="..\..\source\core\BackendRegister.cpp" />
+    <ClCompile Include="..\..\source\core\BufferAllocator.cpp" />
+    <ClCompile Include="..\..\source\core\ConvolutionCommon.cpp" />
+    <ClCompile Include="..\..\source\core\Execution.cpp" />
+    <ClCompile Include="..\..\source\core\FileLoader.cpp" />
+    <ClCompile Include="..\..\source\core\Interpreter.cpp" />
+    <ClCompile Include="..\..\source\core\MNNMemoryUtils.cpp" />
+    <ClCompile Include="..\..\source\core\OpCommonUtils.cpp" />
+    <ClCompile Include="..\..\source\core\Pipeline.cpp" />
+    <ClCompile Include="..\..\source\core\Schedule.cpp" />
+    <ClCompile Include="..\..\source\core\Session.cpp" />
+    <ClCompile Include="..\..\source\core\SizeComputer.cpp" />
+    <ClCompile Include="..\..\source\core\Tensor.cpp" />
+    <ClCompile Include="..\..\source\core\TensorUtils.cpp" />
+    <ClCompile Include="..\..\source\core\WrapExecution.cpp" />
+    <ClCompile Include="..\..\source\cv\ImageBlitter.cpp" />
+    <ClCompile Include="..\..\source\cv\ImageFloatBlitter.cpp" />
+    <ClCompile Include="..\..\source\cv\ImageProcess.cpp" />
+    <ClCompile Include="..\..\source\cv\ImageSampler.cpp" />
+    <ClCompile Include="..\..\source\cv\Matrix_CV.cpp" />
+    <ClCompile Include="..\..\source\math\Matrix.cpp" />
+    <ClCompile Include="..\..\source\math\WingoradGenerater.cpp" />
+    <ClCompile Include="..\..\source\plugin\PluginKernel.cpp" />
+    <ClCompile Include="..\..\source\plugin\PluginShapeInference.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeArgMax.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeAsString.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeBatchMatMul.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeBatchToSpaceND.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeBinaryOp.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeBroadcastTo.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeCast.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeConcat.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeConst.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeConvolution.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeConvolution3D.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeCosineSimilarity.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeCrop.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeCropAndResize.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeDeconvolution.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeDepthToSpace.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeDequantize.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeDetectionOutput.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeDetectionPostProcess.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeEltwise.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeExpandDims.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeFill.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeGather.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeGatherND.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeGatherV2.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeInnerProduct.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeInterp.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeLinSpace.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeLSTM.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeMatMul.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeMoments.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeNonMaxSuppressionV2.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeOneHot.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapePack.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapePadding.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapePermute.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapePlugin.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapePool.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapePool3D.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapePriorbox.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeProposal.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeQuantizedAvgPool.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeQuantizedMaxPool.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeQuantizedReshape.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeRange.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeRank.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeReduceJoin.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeReduction.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeRegister.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeReshape.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeResize.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeRNNSequenceGRU.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeROIPooling.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeScatterNd.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeSelect.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeShape.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeSize.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeSlice.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeSliceTf.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeSpaceToBatchND.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeSpaceToDepth.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeSqueeze.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeStridedSlice.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeTensorConvert.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeTFQuantizedConv2D.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeTile.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeTopKV2.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeTranspose.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeUnpack.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeUnravelIndex.cpp" />
+    <ClCompile Include="..\..\source\shape\ShapeWhere.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

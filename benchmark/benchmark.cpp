@@ -69,6 +69,12 @@ std::vector<Model> findModelFiles(const char* dir) {
         }
     } while (FindNextFile(hFind, &ffd) != 0);
     FindClose(hFind);
+
+//    HMODULE hisAlgModule = LoadLibraryEx("MNN_CL.dll", NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+//    if (NULL == hisAlgModule) {
+//        printf("load MNN_CL.dll failed\r\n");
+//    }
+
 #else
     DIR* root;
     if ((root = opendir(dir)) == NULL) {
