@@ -195,6 +195,15 @@
     <ClCompile Include="..\..\source\backend\opencl\execution\UnaryExecution.cpp" />
     <ClCompile Include="..\..\source\backend\opencl\execution\ZerosLikeExecution.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\backend\opencl\core\BufferPool.hpp" />
+    <ClInclude Include="..\..\source\backend\opencl\core\ImageBufferConvertor.hpp" />
+    <ClInclude Include="..\..\source\backend\opencl\core\ImagePool.hpp" />
+    <ClInclude Include="..\..\source\backend\opencl\core\OpenCLBackend.hpp" />
+    <ClInclude Include="..\..\source\backend\opencl\core\OpenCLRunningUtils.hpp" />
+    <ClInclude Include="..\..\source\backend\opencl\core\runtime\OpenCLRuntime.hpp" />
+    <ClInclude Include="..\..\source\backend\opencl\core\runtime\OpenCLWrapper.hpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

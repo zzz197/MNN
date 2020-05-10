@@ -487,6 +487,11 @@
     <ClCompile Include="..\..\source\shape\ShapeUnravelIndex.cpp" />
     <ClCompile Include="..\..\source\shape\ShapeWhere.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\math\Matrix.hpp" />
+    <ClInclude Include="..\..\source\math\Vec4.hpp" />
+    <ClInclude Include="..\..\source\math\WingoradGenerater.hpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

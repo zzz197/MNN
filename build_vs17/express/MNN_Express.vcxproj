@@ -27,6 +27,10 @@
     <ClCompile Include="..\..\express\Optimizer.cpp" />
     <ClCompile Include="..\..\express\Utils.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\express\MergeOptimizer.hpp" />
+    <ClInclude Include="..\..\express\Utils.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{443883F5-3D02-4DDC-9E39-B5BB60923789}</ProjectGuid>

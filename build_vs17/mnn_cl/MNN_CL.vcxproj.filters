@@ -169,4 +169,27 @@
       <Filter>源文件\core</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\backend\opencl\core\BufferPool.hpp">
+      <Filter>源文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\backend\opencl\core\ImageBufferConvertor.hpp">
+      <Filter>源文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\backend\opencl\core\ImagePool.hpp">
+      <Filter>源文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\backend\opencl\core\OpenCLBackend.hpp">
+      <Filter>源文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\backend\opencl\core\OpenCLRunningUtils.hpp">
+      <Filter>源文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\backend\opencl\core\runtime\OpenCLRuntime.hpp">
+      <Filter>源文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\backend\opencl\core\runtime\OpenCLWrapper.hpp">
+      <Filter>源文件\core</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

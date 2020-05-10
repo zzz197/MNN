@@ -763,4 +763,15 @@
       <Filter>源文件\plugin</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\math\Matrix.hpp">
+      <Filter>源文件\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\math\Vec4.hpp">
+      <Filter>源文件\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\math\WingoradGenerater.hpp">
+      <Filter>源文件\math</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
