@@ -1,0 +1,777 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="源文件\core">
+      <UniqueIdentifier>{2e5ee3e5-6cb0-4956-90ea-97bd74f05cc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\backend">
+      <UniqueIdentifier>{7d504960-99f9-4ff1-9d47-fbcfd301bd0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\cv">
+      <UniqueIdentifier>{051fa26d-1b30-416a-afd1-c5ef4b6b7294}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\math">
+      <UniqueIdentifier>{7263ecdb-d661-40f3-b357-f82812331fce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\shape">
+      <UniqueIdentifier>{a573e781-10fd-4f8d-ad4d-081ed299149e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\backend\cpu">
+      <UniqueIdentifier>{a9a4bfd3-e367-4229-9243-39f97140a6c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\backend\cpu\compute">
+      <UniqueIdentifier>{3121a584-4ba8-4ff5-84b1-3d1fe005fec0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\backend\cpu\x86">
+      <UniqueIdentifier>{263c1829-9987-46e1-b1d1-bec62f62f8c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\backend\cpu\x86\sse">
+      <UniqueIdentifier>{0a0e4133-cade-4eaa-bfbb-bc05da215c74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\backend\cpu\x86\avx2">
+      <UniqueIdentifier>{b1bbff54-c408-4734-b8d1-453d6ebc86d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\plugin">
+      <UniqueIdentifier>{9586ffb6-6d09-4030-b377-67bde945c838}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\shape\ShapeArgMax.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeAsString.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeBatchMatMul.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeBatchToSpaceND.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeBinaryOp.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeCast.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeConcat.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeConst.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeConvolution.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeCosineSimilarity.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeCrop.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeCropAndResize.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeDeconvolution.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeDepthToSpace.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeDequantize.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeDetectionOutput.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeEltwise.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeExpandDims.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeFill.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeGather.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeGatherV2.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeInnerProduct.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeInterp.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeLSTM.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeMatMul.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeMoments.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeNonMaxSuppressionV2.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapePack.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapePadding.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapePermute.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapePool.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapePriorbox.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeProposal.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeQuantizedAvgPool.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeQuantizedMaxPool.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeQuantizedReshape.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeRange.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeRank.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeReduceJoin.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeReduction.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeRegister.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeReshape.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeResize.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeRNNSequenceGRU.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeROIPooling.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeSelect.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeShape.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeSize.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeSlice.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeSliceTf.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeSpaceToBatchND.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeSpaceToDepth.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeSqueeze.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeStridedSlice.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeTensorConvert.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeTFQuantizedConv2D.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeTile.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeTopKV2.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeTranspose.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeUnpack.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeWhere.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\math\Matrix.cpp">
+      <Filter>源文件\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\math\WingoradGenerater.cpp">
+      <Filter>源文件\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\cv\ImageBlitter.cpp">
+      <Filter>源文件\cv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\cv\ImageFloatBlitter.cpp">
+      <Filter>源文件\cv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\cv\ImageProcess.cpp">
+      <Filter>源文件\cv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\cv\ImageSampler.cpp">
+      <Filter>源文件\cv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\cv\Matrix_CV.cpp">
+      <Filter>源文件\cv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\AutoTime.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\Backend.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\BackendFactory.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\BackendRegister.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\BufferAllocator.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\Execution.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\FileLoader.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\Interpreter.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\Pipeline.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\Schedule.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\Session.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\SizeComputer.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\Tensor.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\TensorUtils.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\WrapExecution.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUArgMax.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUAsString.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUBackend.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUBatchMatMul.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUBatchToSpaceND.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUBinary.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUCast.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUConcat.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUConst.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUConv2DBackPropFilter.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUConvInt8.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUConvolution.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUConvolutionDepthwise.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUCosineSimilarity.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUCrop.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUCropAndResize.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUDeconvolution.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUDeconvolutionDepthwise.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUDepthToSpace.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUDepthwiseConvInt8.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUDequantize.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUDetectionOutput.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUEltwise.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUEltwiseInt8.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUExpandDims.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUFill.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUFloatToInt8.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUGather.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUGatherV2.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUInnerProduct.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUInstanceNorm.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUInt8ToFloat.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUInterp.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPULRN.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPULSTM.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUMatMul.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUMoments.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUNonMaxSuppressionV2.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUNormalize.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUOPRegister.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUPack.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUPadding.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUPermute.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUPool.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUPoolGrad.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUPoolInt8.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUPriorbox.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUProposal.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUQuanConvolutionDepthwise.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUQuantizedAdd.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUQuantizedAvgPool.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUQuantizedConcat.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUQuantizedLogistic.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUQuantizedMaxPool.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUQuantizedReshape.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUQuantizedSoftmax.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPURange.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPURank.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUReduceJoin.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUReduction.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPURelu.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUReluGrad.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUReshape.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUResize.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPURNNSequenceGRU.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUROIPooling.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPURuntime.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUScale.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUSelect.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUSelu.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUSetDiff1D.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUShape.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUSigmoid.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUSize.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUSlice.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUSliceTf.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUSoftmax.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUSoftmaxGrad.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUSpaceToBatchND.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUSpaceToDepth.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUSpatialProduct.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUSqueeze.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUStridedSlice.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUTanh.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUTensorConvert.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUTFQuantizedConv2D.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUTile.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUTopKV2.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUTranspose.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUUnary.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUUnpack.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUWhere.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUZeroLike.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\ThreadPool.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\CommonOptFunction.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\Convolution1x1Strassen.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\Convolution3x3.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvolutionDepthwise3x3.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvolutionFloatFactory.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvolutionGroup.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvolutionInt8Executor.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvolutionIntFactory.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvolutionTiledExecutor.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvolutionWinograd.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvOpt.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\DeconvolutionWithStride.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\Int8FunctionsOpt.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\OptimizedComputer.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ResizeFunction.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\StrassenMatmulComputor.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\WinogradOptFunction.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeConvolution3D.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeGatherND.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapePool3D.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUConvolution3D.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUElu.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUGatherND.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUMatrixBandPart.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUReverseSequence.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\Convolution3D3x3.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\compute\ConvolutionWinograd3D.cpp">
+      <Filter>源文件\backend\cpu\compute</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeDetectionPostProcess.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUDetectionPostProcess.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\DispatchHelper.cpp">
+      <Filter>源文件\backend\cpu\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\FunctionDispatcher.cpp">
+      <Filter>源文件\backend\cpu\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\sse\CommonOptFunction.cpp">
+      <Filter>源文件\backend\cpu\x86\sse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\sse\MNNConvSlideWindowBorder.cpp">
+      <Filter>源文件\backend\cpu\x86\sse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\sse\MNNConvSlideWindowMiddle.cpp">
+      <Filter>源文件\backend\cpu\x86\sse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\sse\MNNGemmFloatCommon_4.cpp">
+      <Filter>源文件\backend\cpu\x86\sse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\sse\MNNMatrixAdd.cpp">
+      <Filter>源文件\backend\cpu\x86\sse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\sse\MNNMatrixSub.cpp">
+      <Filter>源文件\backend\cpu\x86\sse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\avx\CommonOptFunction.cpp">
+      <Filter>源文件\backend\cpu\x86\avx2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\avx\MNNConvSlideWindowMiddle.cpp">
+      <Filter>源文件\backend\cpu\x86\avx2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\avx\MNNGemmFloatCommon_4.cpp">
+      <Filter>源文件\backend\cpu\x86\avx2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\avx\MNNMatrixAdd.cpp">
+      <Filter>源文件\backend\cpu\x86\avx2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\x86_x64\avx\MNNMatrixSub.cpp">
+      <Filter>源文件\backend\cpu\x86\avx2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\MNNMemoryUtils.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeBroadcastTo.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeLinSpace.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeOneHot.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeScatterNd.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapeUnravelIndex.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUBroadcastTo.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUDilation2D.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPULinSpace.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUOneHot.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUScatterNd.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUThreshold.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUUnravelIndex.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\backend\cpu\CPUPlugin.cpp">
+      <Filter>源文件\backend\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\ConvolutionCommon.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\OpCommonUtils.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\shape\ShapePlugin.cpp">
+      <Filter>源文件\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\plugin\PluginKernel.cpp">
+      <Filter>源文件\plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\plugin\PluginShapeInference.cpp">
+      <Filter>源文件\plugin</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\math\Matrix.hpp">
+      <Filter>源文件\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\math\Vec4.hpp">
+      <Filter>源文件\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\math\WingoradGenerater.hpp">
+      <Filter>源文件\math</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
