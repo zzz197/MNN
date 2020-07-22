@@ -125,7 +125,7 @@ EXPRP Expr::create(Variable::Info&& info) {
     auto& dstInfo = expr->mInside->mOutputInfos[0];
     dstInfo.syncSize();
     if (dstInfo.size > 0) {
-        expr->mExtraBuffer.reset(new char[dstInfo.size * dstInfo.type.bytes()]);
+        expr->mExtraBuffer.reset(new char[dstInfo.size * dstInfo.type.bytes()], std::default_delete<char[]>());
         expr->mInside->mOutputInfos[0].ptr = expr->mExtraBuffer.get();
         expr->mInside->mInfoDirty = false;
     } else {
@@ -196,7 +196,7 @@ EXPRP Expr::create(const OpT* op, std::vector<VARP> inputs, int outputSize) {
     flatbuffers::FlatBufferBuilder builder;
     auto offset = Op::Pack(builder, op);
     builder.Finish(offset);
-    std::shared_ptr<char> extraBuffer(new char[builder.GetSize()]);
+    std::shared_ptr<char> extraBuffer(new char[builder.GetSize()], std::default_delete<char[]>());
     ::memcpy(extraBuffer.get(), builder.GetBufferPointer(), builder.GetSize());
     auto resExpr = Expr::create(std::make_pair(extraBuffer, builder.GetSize()), std::move(inputs), outputSize);
     resExpr->setName(op->name);
@@ -233,15 +233,8 @@ bool Expr::requireInfo() {
     for (int i = 0; i < mInputs.size(); ++i) {
         auto& v  = mInputs[i];
         if (mInside->mReq.shapeNeedContent[i]) {
-            auto resPtr = v->readInternal(true);
-            if (nullptr == resPtr) {
-#ifdef MNN_EXPRESS_ERROR_REPORT
-                MNN_ERROR("%s, Error for compute shape %d\n", mName.c_str(), i);
-#endif
-                ready = false;
-                mValid = false;
-                break;
-            }
+            // `readInternal` maybe return nullptr if element count is 0.
+            v->readInternal(true);
         }
     }
     if (!ready) {
@@ -351,12 +344,11 @@ bool Variable::input(VARP src) {
     }
     auto info = src->getInfo();
     std::shared_ptr<Variable::Info> tempInfo;
-    bool needCopy = true;
-    if (nullptr == info || 0 == info->size) {
+    if (nullptr == info) {
         tempInfo.reset(new Variable::Info);
+        tempInfo->size = 0;
         tempInfo->type = halide_type_of<float>();
         info = tempInfo.get();
-        needCopy = false;
     }
     auto dstInfo = getInfo();
     bool needChange = nullptr == dstInfo || info->order != dstInfo->order || info->dim.size() != dstInfo->dim.size();
@@ -368,18 +360,20 @@ bool Variable::input(VARP src) {
             }
         }
     }
+
+    if (!mFrom->mInside->mCache) {
+        Executor::getGlobalExecutor()->makeCache({mFrom}, false);
+    }
     if (needChange) {
         bool needAlloc = info->size * info->type.bytes() > mFrom->mInside->mOutputInfos[0].size * mFrom->mInside->mOutputInfos[0].type.bytes();
         mFrom->mInside->mOutputInfos[0] = *info;
         if (needAlloc) {
-            mFrom->mExtraBuffer.reset(new char[info->size * info->type.bytes()]);
+            mFrom->mExtraBuffer.reset(new char[info->size * info->type.bytes()], std::default_delete<char[]>());
         }
         mFrom->mInside->mOutputInfos[0].ptr = mFrom->mExtraBuffer.get();
-        if (nullptr != mFrom->mInside->mCache) {
-            mFrom->mInside->mCache->setShapeDirty(0, mFrom->outputInfo(0));
-        }
+        mFrom->mInside->mCache->setShapeDirty(0, mFrom->outputInfo(0));
     }
-    if (needCopy) {
+    if (info->size) {
         auto dstPtr = writeInternal(false);
         auto srcPtr = src->readMap<void>();
         if (nullptr == dstPtr || nullptr == srcPtr) {
@@ -458,7 +452,7 @@ bool Variable::resize(INTS dims) {
     }
     info.dim = dims;
     info.syncSize();
-    mFrom->mExtraBuffer.reset(new char[info.size * info.type.bytes()]);
+    mFrom->mExtraBuffer.reset(new char[info.size * info.type.bytes()], std::default_delete<char[]>());
     info.ptr = mFrom->mExtraBuffer.get();
     
     mFrom->mValid = true;

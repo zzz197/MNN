@@ -60,13 +60,13 @@ public:
     VARP mean(INTS dims) const;
     VARP sum(INTS dims) const;
 
-    bool operator==(const VARP& var) {
+    bool operator==(const VARP& var) const {
         return var.mContent == mContent;
     }
-    bool operator<(const VARP& var) {
+    bool operator<(const VARP& var) const {
         return mContent < var.mContent;
     }
-    bool operator<=(const VARP& var) {
+    bool operator<=(const VARP& var) const {
         return mContent <= var.mContent;
     }
     VARP& operator=(const VARP& var) {
@@ -95,9 +95,9 @@ inline bool operator==(Variable* src, VARP dst) {
 inline bool operator!=(Variable* src, VARP dst) {
     return src != dst.get();
 }
-inline bool operator<(VARP src, VARP dst) {
-    return src.get() < dst.get();
-}
+// inline bool operator<(VARP src, VARP dst) {
+//     return src.get() < dst.get();
+// }
 typedef std::vector<VARP> VARPS;
 
 class MNN_PUBLIC Variable {
@@ -225,6 +225,15 @@ public:
     bool valid() const {
         return mValid;
     }
+
+    void setEntry(const std::vector<VARP>& entries) {
+        mEntries = entries;
+    }
+
+    const std::vector<VARP>& getEntry() const {
+        return mEntries;
+    }
+
 private:
     static void _addLinkForInputs(EXPRP expr);
 
@@ -244,6 +253,10 @@ private:
     std::shared_ptr<Inside> mInside = nullptr;
     bool mVisited                   = false;
     std::vector<WeakEXPRP> mTo;
+
+    // Only the enter input has entries, and it helps to get info for enter
+    // input expression.
+    std::vector<VARP> mEntries;
 };
 } // namespace Express
 } // namespace MNN

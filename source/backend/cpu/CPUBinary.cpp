@@ -327,6 +327,15 @@ struct BinaryNotEqual : std::binary_function<_Arg1, _Arg2, _ErrorCode> {
     }
 };
 
+static void callEleFunc(void(*proc)(float* C, const float* A, const float* B, size_t width, size_t cStride, size_t aStride, size_t bStride, size_t height),
+                        float* C, const float* A, const float* B, size_t size, bool swap) {
+    if (swap) {
+        proc(C, B, A, size, 0, 0, 0, 1);
+    } else {
+        proc(C, A, B, size, 0, 0, 0, 1);
+    }
+}
+
 ErrorCode CPUBinaryFloat::onExecute(const std::vector<Tensor*>& inputs, const std::vector<Tensor*>& outputs) {
     auto input  = inputs[0];
     auto input1 = inputs[1];
@@ -365,7 +374,7 @@ ErrorCode CPUBinaryFloat::onExecute(const std::vector<Tensor*>& inputs, const st
             } else {
                 MNN_CONCURRENCY_BEGIN(tId, numberThread) {
                     for (int y = tId; y < mOutside; y+=numberThread) {
-                        mElementProc(output->host<float>() + y * mAxis, input->host<float>() + y * mAxis, input1->host<float>(), mAxis, 0, 0, 0, 1);
+                        callEleFunc(mElementProc, output->host<float>() + y * mAxis, input->host<float>() + y * mAxis, input1->host<float>(), mAxis, swap);
                     }
                 }
                 MNN_CONCURRENCY_END();
@@ -466,16 +475,16 @@ ErrorCode CPUBinaryFloat::onExecute(const std::vector<Tensor*>& inputs, const st
             _binaryOp<float, int32_t, BinaryGreater<float, float, int32_t>>(input, input1, output);
             break;
         case BinaryOpOperation_LESS:
-            _binaryOp<float, float, BinaryLess<float, float, int32_t>>(input, input1, output);
+            _binaryOp<float, int32_t, BinaryLess<float, float, int32_t>>(input, input1, output);
             break;
         case BinaryOpOperation_LESS_EQUAL:
-            _binaryOp<float, float, BinaryLessEqual<float, float, int32_t>>(input, input1, output);
+            _binaryOp<float, int32_t, BinaryLessEqual<float, float, int32_t>>(input, input1, output);
             break;
         case BinaryOpOperation_GREATER_EQUAL:
-            _binaryOp<float, float, BinaryGreaterEqual<float, float, int32_t>>(input, input1, output);
+            _binaryOp<float, int32_t, BinaryGreaterEqual<float, float, int32_t>>(input, input1, output);
             break;
         case BinaryOpOperation_EQUAL:
-            _binaryOp<float, float, BinaryEqual<float, float, int32_t>>(input, input1, output);
+            _binaryOp<float, int32_t, BinaryEqual<float, float, int32_t>>(input, input1, output);
             break;
         case BinaryOpOperation_FLOORDIV:
             _binaryOp<float, float, BinaryFloorDiv<float, float, float>>(input, input1, output);
@@ -493,7 +502,7 @@ ErrorCode CPUBinaryFloat::onExecute(const std::vector<Tensor*>& inputs, const st
             _binaryOp<float, float, BinaryAtan2<float, float, float>>(input, input1, output);
             break;
         case BinaryOpOperation_NOTEQUAL:
-            _binaryOp<float, float, BinaryNotEqual<float, float, float>>(input, input1, output);
+            _binaryOp<float, int32_t, BinaryNotEqual<float, float, int32_t>>(input, input1, output);
             break;
         case BinaryOpOperation_MOD:
             _binaryOp<float, float, BinaryMod<float, float, float>>(input, input1, output);
@@ -573,16 +582,19 @@ class CPUBinaryCreator : public CPUBackend::Creator {
 public:
     virtual Execution* onCreate(const std::vector<Tensor*>& inputs, const std::vector<Tensor*>& outputs,
                                 const MNN::Op* op, Backend* backend) const override {
-        auto dataType   = outputs[0]->getType();
+        // auto dataType   = outputs[0]->getType();
         int32_t type = op->main_as_BinaryOp()->opType();
+        // auto dataType = op->main_as_BinaryOp()->T();
+        auto dataType = inputs[0]->getType();
         if (dataType.bits == 32) {
             if (dataType.code == halide_type_int) {
                 return new CPUBinaryInt(backend, type);
-            }
-            if (dataType.code == halide_type_float) {
+            } else if (dataType.code == halide_type_float) {
                 return new CPUBinaryFloat(backend, type);
             }
         }
+        MNN_ERROR("CpuBinary: unsupported data type (bits: %d, code: %d)\n",
+                  dataType.bits, dataType.code);
         return nullptr;
     }
 };
