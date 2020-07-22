@@ -132,6 +132,11 @@ public:
             auto EndVar     = MakeConstVecVar(tfEnd);
             auto StridesVar = MakeConstVecVar(tfStrides);
             sliceOp->type   = OpType_StridedSlice;
+            sliceOp->main.type = OpParameter_StridedSliceParam;
+            auto param = new StridedSliceParamT;
+            param->Index = DataType_DT_INT32;
+            param->T = DataType_DT_FLOAT;
+            sliceOp->main.value = param;
             return Expr::create(sliceOp.get(), {input, beginVar, EndVar, StridesVar}, expr->outputSize());
         } else {
             std::vector<int> tfBegin(ndim, 0);
@@ -141,6 +146,9 @@ public:
                 auto fin = ends[i];
                 if (fin > inputInfo->dim[axis]) {
                     fin = inputInfo->dim[axis];
+                }
+                if (fin < 0) {
+                    fin += inputInfo->dim[axis];
                 }
                 if (starts[i] < 0) {
                     starts[i] = inputInfo->dim[axis] + starts[i];
