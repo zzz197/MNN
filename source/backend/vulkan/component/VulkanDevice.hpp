@@ -49,8 +49,6 @@ public:
     const VkResult invalidateMappedMemoryRanges(const VkMappedMemoryRange* memoryRanges,
                                                 const uint32_t memoryRangeCount = 1) const;
 
-    const void getPhysicalDeviceMemoryProperties(VkPhysicalDeviceMemoryProperties& memoryProperties) const;
-
     // VkCommand*
     const VkResult createCommandPool(
         VkCommandPool& cmdPool, const VkCommandPoolCreateFlags flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
@@ -138,11 +136,6 @@ public:
                                         const VkDescriptorPoolSize* pPoolSizes,
                                         const VkAllocationCallbacks* allocator = nullptr) const;
 
-    const VkResult allocateDescriptorSets(VkDescriptorSet* pDescriptorSets,
-                                          const VkDescriptorSetAllocateInfo* allocateInfo) const;
-
-    const VkResult allocateDescriptorSet(VkDescriptorSet& pDescriptorSet,
-                                         const VkDescriptorSetAllocateInfo& allocateInfo) const;
     const VkResult allocateDescriptorSet(VkDescriptorSet& pDescriptorSet, const VkDescriptorPool& descPool,
                                          const VkDescriptorSetLayout& setLayout) const;
 
@@ -154,6 +147,9 @@ public:
 
     const VkPhysicalDeviceProperties& proty() const {
         return mDeviceProty;
+    }
+    const VkPhysicalDeviceMemoryProperties& memProty() const {
+        return mMemoryProty;
     }
 
     const bool success() const {
@@ -172,6 +168,7 @@ private:
     VkDevice mDevice;
     VkPhysicalDeviceProperties mDeviceProty;
     VkQueue mQueue;
+    VkPhysicalDeviceMemoryProperties mMemoryProty;
 };
 } // namespace MNN
 #endif /* VulkanDevice_hpp */

@@ -89,6 +89,11 @@ void MNNAxByClamp(float* C, const float* A, const float* B, size_t width, size_t
 
 void MNNAxByClampBroadcastC4(float* C, const float* A, const float* B, size_t width, size_t cStride, size_t aStride, size_t height, const float* parameters);
 
+// dim: 4-element, sizeDW, sizeDH, strideSW, strideDH
+void MNNTranspose32Bit(int32_t* dstO, const int32_t* srcO, int32_t* dim); // not C4
+
+void MNNVectorTop1Float(float* input, float* maxValue, int32_t* maxIndex, size_t inputCountUnit);
+void MNNVectorTop1Int32(int32_t* input, int32_t* maxValue, int32_t* maxIndex, size_t inputCountUnit);
 #ifdef __cplusplus
 }
 #endif

@@ -12,6 +12,7 @@
 
 #include "liteConverter.hpp"
 #include "liteOpConverter.hpp"
+#include "options.hpp"
 
 static MNN::DataType _dataTypeMap(tflite::TensorType type) {
     switch (type) {
@@ -92,7 +93,6 @@ static bool needExtractInput(uint32_t opCode) {
     NONEED(tflite::BuiltinOperator_SPLIT);
     NONEED(tflite::BuiltinOperator_CONCATENATION);
     NONEED(tflite::BuiltinOperator_CONV_2D);
-    NONEED(tflite::BuiltinOperator_RESHAPE);
     NONEED(tflite::BuiltinOperator_RESIZE_BILINEAR);
     NONEED(tflite::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR);
     NONEED(tflite::BuiltinOperator_SOFTMAX);
@@ -101,7 +101,8 @@ static bool needExtractInput(uint32_t opCode) {
     return true;
 }
 
-int tflite2MNNNet(const std::string inputModel, const std::string bizCode, std::unique_ptr<MNN::NetT>& MNNNetT) {
+int tflite2MNNNet(const std::string inputModel, const std::string bizCode,
+                  const common::Options& options, std::unique_ptr<MNN::NetT>& MNNNetT) {
     const std::string model_name = inputModel;
     auto model                   = std::shared_ptr<TfliteModel>(new TfliteModel(model_name));
     model->readModel();

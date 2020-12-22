@@ -87,6 +87,7 @@ public:
     };
     bool fix(InputType type) const;
 private:
+    friend class Variable;
     std::shared_ptr<Variable> mContent;
 };
 inline bool operator==(Variable* src, VARP dst) {
@@ -107,7 +108,6 @@ public:
         INTS dim;
         halide_type_t type;
         int size;
-        void* ptr = nullptr;
         void syncSize();
     };
     const std::string& name() const;
@@ -173,7 +173,12 @@ private:
 class MNN_PUBLIC Expr {
 public:
     struct Inside;
-    static EXPRP create(Variable::Info&& info);
+    enum MemoryType {
+        COPY,
+        MOVE,
+        REF
+    };
+    static EXPRP create(Variable::Info&& info, const void* ptr, VARP::InputType type, MemoryType copy = COPY);
     static EXPRP create(const OpT* op, std::vector<VARP> inputs, int outputSize = 1);
     static EXPRP create(std::pair<std::shared_ptr<char>, int> extra, std::vector<VARP>&& inputs, int outputSize = 1);
     static EXPRP create(std::unique_ptr<OpT>&& op, std::vector<VARP> inputs, int outputSize = 1) {
@@ -188,7 +193,7 @@ public:
         return mInputs;
     }
     int outputSize() const {
-        return mOutputNames.size();
+        return (int)mOutputNames.size();
     }
     static void replace(EXPRP oldExpr, EXPRP newExpr);
     bool requireInfo();
@@ -226,14 +231,6 @@ public:
         return mValid;
     }
 
-    void setEntry(const std::vector<VARP>& entries) {
-        mEntries = entries;
-    }
-
-    const std::vector<VARP>& getEntry() const {
-        return mEntries;
-    }
-
 private:
     static void _addLinkForInputs(EXPRP expr);
 
@@ -254,9 +251,6 @@ private:
     bool mVisited                   = false;
     std::vector<WeakEXPRP> mTo;
 
-    // Only the enter input has entries, and it helps to get info for enter
-    // input expression.
-    std::vector<VARP> mEntries;
 };
 } // namespace Express
 } // namespace MNN

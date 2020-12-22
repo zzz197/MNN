@@ -13,6 +13,8 @@
 #include "tensorflowConverter.hpp"
 #include "writeFb.hpp"
 #include "config.hpp"
+#include "options.hpp"
+#include "common/Global.hpp"
 #include "calibration.hpp"
 #include "logkit.h"
 using namespace MNN;
@@ -23,10 +25,15 @@ static PyObject* PyTool_Converter(PyObject *self, PyObject *args) {
 
     const char* mnnModel = NULL;
     const char* modelFile = NULL;
+    const char* compressionParamsFile = NULL;
+    const char* prototxtFile = NULL;
     PyObject* frameworkType = NULL;
     PyObject* fp16 = NULL;
-    const char* prototxtFile = NULL;
-    if (!PyArg_ParseTuple(args, "ssOO|s", &mnnModel, &modelFile, &frameworkType, &fp16, &prototxtFile)) {
+    PyObject* weightQuantBits = NULL;
+    PyObject* weightQuantAsymmetric = NULL;
+    if (!PyArg_ParseTuple(args, "ssOO|sOOs", &mnnModel, &modelFile,
+                          &frameworkType, &fp16, &prototxtFile,
+                          &weightQuantBits, &weightQuantAsymmetric, &compressionParamsFile)) {
         return NULL;
     }
     struct modelConfig modelPath;
@@ -37,21 +44,31 @@ static PyObject* PyTool_Converter(PyObject *self, PyObject *args) {
     modelPath.benchmarkModel = false;
     modelPath.saveHalfFloat = static_cast<bool>(PyLong_AsLong(fp16));
     modelPath.forTraining = false;
+    modelPath.weightQuantBits = static_cast<int>(PyLong_AsLong(weightQuantBits));
+    modelPath.weightQuantAsymmetric = static_cast<bool>(PyLong_AsLong(weightQuantAsymmetric));
     if(prototxtFile){
-	    modelPath.prototxtFile = std::string(prototxtFile);
+        modelPath.prototxtFile = std::string(prototxtFile);
     }
+
+    common::Options options;
+    if (compressionParamsFile) {
+        modelPath.compressionParamsFile = std::string(compressionParamsFile);
+        options = common::BuildOptions(modelPath.compressionParamsFile);
+    }
+
+    Global<modelConfig>::Reset(&modelPath);
 
     std::unique_ptr<MNN::NetT> netT = std::unique_ptr<MNN::NetT>(new MNN::NetT());
     if (modelPath.model == modelConfig::CAFFE) {
-        caffe2MNNNet(modelPath.prototxtFile, modelPath.modelFile, modelPath.bizCode, netT);
+        caffe2MNNNet(modelPath.prototxtFile, modelPath.modelFile, modelPath.bizCode, options, netT);
     } else if (modelPath.model == modelConfig::TENSORFLOW) {
-        tensorflow2MNNNet(modelPath.modelFile, modelPath.bizCode, netT);
+        tensorflow2MNNNet(modelPath.modelFile, modelPath.bizCode, options, netT);
     } else if (modelPath.model == modelConfig::MNN) {
-        addBizCode(modelPath.modelFile, modelPath.bizCode, netT);
+        addBizCode(modelPath.modelFile, modelPath.bizCode, options, netT);
     } else if (modelPath.model == modelConfig::ONNX) {
-        onnx2MNNNet(modelPath.modelFile, modelPath.bizCode, netT);
+        onnx2MNNNet(modelPath.modelFile, modelPath.bizCode, options, netT);
     } else if (modelPath.model == modelConfig::TFLITE) {
-        tflite2MNNNet(modelPath.modelFile, modelPath.bizCode, netT);
+        tflite2MNNNet(modelPath.modelFile, modelPath.bizCode, options, netT);
     } else {
         std::cout << "Not Support Model Type" << std::endl;
     }
@@ -59,9 +76,9 @@ static PyObject* PyTool_Converter(PyObject *self, PyObject *args) {
     if (modelPath.model != modelConfig::MNN) {
         std::cout << "Start to Optimize the MNN Net..." << std::endl;
         std::unique_ptr<MNN::NetT> newNet = optimizeNet(netT, modelPath.forTraining);
-        writeFb(newNet, modelPath.MNNModel, modelPath.benchmarkModel,modelPath.saveHalfFloat);
+        writeFb(newNet, modelPath.MNNModel, modelPath);
     } else {
-        writeFb(netT, modelPath.MNNModel, modelPath.benchmarkModel,modelPath.saveHalfFloat);
+        writeFb(netT, modelPath.MNNModel, modelPath);
     }
     Py_RETURN_TRUE;
 }
@@ -144,23 +161,22 @@ static PyMethodDef module_methods[] = {
 #else
     #define MOD_INIT(name) PyMODINIT_FUNC init##name(void)
 #endif
-MOD_INIT(_tools)
-{
-    #if PY_MAJOR_VERSION >= 3
-        PyObject *m = PyModule_Create(&moduledef);
-        // module import failed!
-        if (!m) {
-            printf("import Tools failed");
-            return NULL;
-        }
-        return m;
-    #else
-        PyObject *m = Py_InitModule3("_tools", module_methods, "MNNTools Module");
-        // module import failed!
-        if (!m) {
-            printf("import Tools failed");
-            return;
-        }
+MOD_INIT(_tools) {
+#if PY_MAJOR_VERSION >= 3
+    PyObject *m = PyModule_Create(&moduledef);
+    // module import failed!
+    if (!m) {
+        printf("import Tools failed");
+        return NULL;
+    }
+    return m;
+#else
+    PyObject *m = Py_InitModule3("_tools", module_methods, "MNNTools Module");
+    // module import failed!
+    if (!m) {
+        printf("import Tools failed");
         return;
-    #endif
+    }
+    return;
+#endif
 }

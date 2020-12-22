@@ -1,10 +1,10 @@
 #pragma once
 #include <string>
-#include <MNN/expr/Expr.hpp>
-#include <MNN/expr/ExprCreator.hpp>
-using namespace MNN;
-using namespace MNN::Express;
+#include <vector>
+#include "common.h"
+
 using namespace std;
+typedef vector<int> INTS;
 // Returns true if obj is a bytes/str or unicode object
 inline bool checkString(PyObject* obj) {
   return PyBytes_Check(obj) || PyUnicode_Check(obj);
@@ -67,6 +67,33 @@ inline void store_scalar(void* data, int dtype, PyObject* obj) {
     default: throw std::runtime_error("invalid type");
   }
 }
+template<class T>
+class MNNPointer {
+public:
+  MNNPointer(): ptr(nullptr) {};
+  explicit MNNPointer(T *ptr) noexcept : ptr(ptr) {};
+  MNNPointer(MNNPointer &&p) noexcept { free(); ptr = p.ptr; p.ptr = nullptr; };
+
+  ~MNNPointer() { free(); };
+  T * get() { return ptr; }
+  const T * get() const { return ptr; }
+  T * release() { T *tmp = ptr; ptr = nullptr; return tmp; }
+  operator T*() { return ptr; }
+  MNNPointer& operator =(T *new_ptr) noexcept { free(); ptr = new_ptr; return *this; }
+  MNNPointer& operator =(MNNPointer &&p) noexcept { free(); ptr = p.ptr; p.ptr = nullptr; return *this; }
+  T * operator ->() { return ptr; }
+  explicit operator bool() const { return ptr != nullptr; }
+
+private:
+  void free();
+  T *ptr = nullptr;
+};
+template<>
+void MNNPointer<PyObject>::free() {
+  if (ptr)
+    Py_DECREF(ptr);
+}
+using MNNObjectPtr = MNNPointer<PyObject>;
 INTS getshape(PyObject* seq) {
   INTS shape;
   while (PySequence_Check(seq)) {
@@ -77,7 +104,8 @@ INTS getshape(PyObject* seq) {
       throw std::runtime_error("max dimension greater than 20");
     }
     if (length == 0) break;
-    seq = PySequence_GetItem(seq,0);
+    auto seq_obj = MNNObjectPtr(PySequence_GetItem(seq, 0));
+    seq = seq_obj.get();
   }
   return shape;
 }
@@ -99,6 +127,7 @@ void recursive_store(char* data, INTS shape, INTS stride, int dim, PyObject* obj
     recursive_store(data, shape, stride, dim + 1, items[i], dtype, elementSize);
     data +=  stride[dim] * elementSize;
   }
+  Py_XDECREF(seq);
 }
 enum DType {
       DType_FLOAT = 1,
@@ -137,9 +166,8 @@ halide_type_t dtype2htype(DType dtype) {
     CONVERT(DType_INT8, halide_type_of<int8_t>(), dtype);
     return halide_type_of<float>();
 }
-#ifndef USE_PRIVATE
-inline int getitemsize(int dtype, int npy_type)
-{
+#ifdef PYMNN_NUMPY_USABLE
+inline int getitemsize(int dtype, int npy_type) {
     switch(dtype) {
       case DType_FLOAT:
         if(npy_type != NPY_FLOAT) {
@@ -171,8 +199,7 @@ inline int getitemsize(int dtype, int npy_type)
     }
 }
 #endif
-inline int getitemsize(int dtype)
-{
+inline int getitemsize(int dtype) {
     switch(dtype) {
       case DType_FLOAT:
         return 4;
@@ -190,3 +217,4 @@ inline int getitemsize(int dtype)
         throw std::runtime_error("does not support this dtype");
     }
 }
+

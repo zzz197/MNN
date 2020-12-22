@@ -2,13 +2,13 @@
 //  ConvolutionCommon.cpp
 //  MNN
 //
-//  Created by MNN on b'2020/03/02'.
+//  Created by MNN on 2020/03/02.
 //  Copyright © 2018, Alibaba Group Holding Limited
 //
 
-#include "half.hpp"
-#include <math.h>
 #include "ConvolutionCommon.hpp"
+#include <math.h>
+#include "half.hpp"
 namespace MNN {
 static inline void *MNNMemoryAllocAlignZeroAlign(size_t size) {
     return MNNMemoryCallocAlign(size, MNN_MEMORY_ALIGN_DEFAULT);
@@ -248,10 +248,10 @@ static int8_t *ReadQuanData_c(unsigned char *&s, uint32_t *len) {
     return blob;
 }
 
-static int8_t *ReadSparseQuanData_c(unsigned char *&myfile, uint32_t *len) {
+static int8_t *ReadSparseQuanData_c(unsigned char *&myfile, uint32_t *len, const flatbuffers::Vector<float> *alpha) {
     // MNN_ERROR("sparse:%d\n", 1);
     unsigned short shape[64] = {0};
-    unsigned char ucMapSize;
+    uint32_t ucMapSize = 0;
     PSIMPLE_SET setWeight = CreateSimpleSet(256);
     if (setWeight == nullptr) {
         return nullptr;
@@ -291,8 +291,11 @@ static int8_t *ReadSparseQuanData_c(unsigned char *&myfile, uint32_t *len) {
     }
     // 5. Avalable values Count(unsigned char)
     StreamSizeRead(&ucMapSize, 1, 1, myfile);
+    if (0 == ucMapSize) {
+        ucMapSize = 256;
+    }
     // 6. valueset(signed char * valueset_size)
-    for (unsigned char i = 0; i < ucMapSize; i++) {
+    for (int i = 0; i < ucMapSize; i++) {
         int8_t tmp;
         StreamSizeRead(&tmp, 1, 1, myfile);
         InsertSimpleSet(setWeight, tmp);
@@ -329,7 +332,21 @@ static int8_t *ReadSparseQuanData_c(unsigned char *&myfile, uint32_t *len) {
     }
     // set blob data with idx and weight idx
     {
-        memset(blob, 0, Size * sizeof(signed char));
+        if (alpha->size() == 2 * shape[0]) {
+            auto alphaPtr = alpha->data();
+            int area = Size / shape[0];
+            for (int i = 0; i < shape[0]; i++) {
+                float min = alphaPtr[2*i];
+                float scale = alphaPtr[2*i+1];
+                int zeroQuant = -128;
+                if (scale > 1e-6) {
+                    zeroQuant = round((0.0f - min) / scale) + (-128);
+                }
+                memset(blob+area*i, zeroQuant, area * sizeof(signed char));
+            }
+        } else {
+            memset(blob, 0, Size * sizeof(signed char)); //backward compability with previous symmetric weight quant
+        }
         int iPreIdx = 0;
         for (int i = 0; i < nnz; i++) {
             iPreIdx += arrIdx[i];
@@ -355,11 +372,11 @@ std::shared_ptr<ConvolutionCommon::Int8Common> ConvolutionCommon::load(const IDS
         buffer = ReadQuanData_c(originBuffer, &weightLength);
     }
     if (2 == quan->type()) {
-        buffer = ReadSparseQuanData_c(originBuffer, &weightLength);
+        buffer = ReadSparseQuanData_c(originBuffer, &weightLength, quan->alpha());
     }
     // read fp16 data
     if (3 == quan->type()) {
-        weightLength    = quan->buffer()->size() / sizeof(half_float::half);
+        weightLength = quan->buffer()->size() / sizeof(half_float::half);
         std::vector<int8_t> tempHalfWeight(quan->buffer()->size());
         ::memcpy(tempHalfWeight.data(), quan->buffer()->data(), quan->buffer()->size());
         auto halfWeight = reinterpret_cast<half_float::half *>(tempHalfWeight.data());
@@ -370,6 +387,34 @@ std::shared_ptr<ConvolutionCommon::Int8Common> ConvolutionCommon::load(const IDS
         }
         std::transform(halfWeight, halfWeight + weightLength, result->weightFloat.get(),
                        [](half_float::half h) { return float(h); });
+        return result;
+    }
+
+    // weight int8 only
+    if (4 == quan->type()) {
+        weightLength = quan->buffer()->size();
+        result->weightFloat.reset(weightLength);
+        const int kernelNum  = quan->aMax();
+        int kernelSize       = weightLength / kernelNum;
+        auto minAndScalsSize = quan->alpha()->size();
+        if (minAndScalsSize != (2 * kernelNum)) {
+            MNN_ERROR("recover int8 weights error.\n");
+        }
+        auto minAndScales = quan->alpha()->data();
+        auto int8Weights  = quan->buffer()->data();
+        auto weightPtr    = result->weightFloat.get();
+        
+        for (int k = 0; k < kernelNum; k++) {
+            auto kernelMinAndScale = minAndScales + k * 2;
+            float min              = kernelMinAndScale[0];
+            float scale            = kernelMinAndScale[1];
+            int beginIndex         = k * kernelSize;
+            for (int s = 0; s < kernelSize; s++) {
+                int8_t quantWeight        = int8Weights[beginIndex + s];
+                float oriWeight           = (quantWeight - (-128)) * scale + min;
+                weightPtr[beginIndex + s] = oriWeight;
+            }
+        }
         return result;
     }
 
@@ -393,14 +438,27 @@ std::shared_ptr<ConvolutionCommon::Int8Common> ConvolutionCommon::load(const IDS
             MNN_PRINT("Alloc memory error for extract idst int8/ Back to float\n");
             return nullptr;
         }
-        auto outputCount   = result->alpha.size();
+        int outputCount = 0;
+        if (quan->readType() != 0) {
+            outputCount   = result->alpha.size() / 2;
+        } else {
+            outputCount   = result->alpha.size(); // backward compability with previous symmetric quantization
+        }
         int partWeightSize = weightLength / outputCount;
         for (int o = 0; o < outputCount; ++o) {
             auto dstW   = result->weightFloat.get() + o * partWeightSize;
             auto srcW   = result->weight.get() + o * partWeightSize;
-            float alpha = result->alpha.get()[o];
-            for (int j = 0; j < partWeightSize; ++j) {
-                dstW[j] = ((float)srcW[j]) * alpha * quan->quantScale();
+            if (result->alpha.size() == 2 * outputCount) {
+                float min = result->alpha.get()[2*o];
+                float alpha = result->alpha.get()[2*o+1];
+                for (int j = 0; j < partWeightSize; ++j) {
+                    dstW[j] = (( (float)srcW[j] - (-128) ) * alpha + min) * quan->quantScale();
+                }
+            } else {
+                float alpha = result->alpha.get()[o];
+                for (int j = 0; j < partWeightSize; ++j) {
+                    dstW[j] = ((float)srcW[j]) * alpha * quan->quantScale();
+                }
             }
         }
 
@@ -411,15 +469,30 @@ std::shared_ptr<ConvolutionCommon::Int8Common> ConvolutionCommon::load(const IDS
     return result;
 }
 
-std::pair<int, int> ConvolutionCommon::convolutionPad(const Tensor* input, const Tensor* output, const Convolution2DCommon* mCommon) {
+void ConvolutionCommon::getConvParameters(std::shared_ptr<Int8Common> *quanCommon, const MNN::Convolution2D *conv2d, const float** originWeight, int* originWeightSize) {
+    *originWeight = nullptr;
+    *originWeightSize = 0;
+    if (nullptr != conv2d->quanParameter()) {
+        *quanCommon = load(conv2d->quanParameter(), false);
+        *originWeight     = (*quanCommon)->weightFloat.get();
+        *originWeightSize = (*quanCommon)->weightFloat.size();
+    }
+    if (*originWeight == nullptr) {
+        *originWeight = conv2d->weight()->data();
+        *originWeightSize = conv2d->weight()->size();
+    }
+}
+
+std::pair<int, int> ConvolutionCommon::convolutionPad(const Tensor *input, const Tensor *output,
+                                                      const Convolution2DCommon *mCommon) {
     if (mCommon->padMode() == PadMode_SAME) {
         int kernelWidthSize  = (mCommon->kernelX() - 1) * mCommon->dilateX() + 1;
         int kernelHeightSize = (mCommon->kernelY() - 1) * mCommon->dilateY() + 1;
 
         int padNeededWidth  = (output->width() - 1) * mCommon->strideX() + kernelWidthSize - input->width();
         int padNeededHeight = (output->height() - 1) * mCommon->strideY() + kernelHeightSize - input->height();
-        auto mPadX               = padNeededWidth / 2;
-        auto mPadY               = padNeededHeight / 2;
+        auto mPadX          = padNeededWidth / 2;
+        auto mPadY          = padNeededHeight / 2;
         return std::make_pair(mPadX, mPadY);
     }
     auto mPadX = mCommon->padX();
@@ -430,7 +503,8 @@ std::pair<int, int> ConvolutionCommon::convolutionPad(const Tensor* input, const
     }
     return std::make_pair(mPadX, mPadY);
 }
-std::pair<int, int> ConvolutionCommon::convolutionTransposePad(const Tensor* input, const Tensor* output, const Convolution2DCommon* mCommon) {
+std::pair<int, int> ConvolutionCommon::convolutionTransposePad(const Tensor *input, const Tensor *output,
+                                                               const Convolution2DCommon *mCommon) {
     if (mCommon->padMode() == PadMode_SAME) {
         const int outputWidth  = output->width();
         const int outputHeight = output->height();
@@ -454,4 +528,4 @@ std::pair<int, int> ConvolutionCommon::convolutionTransposePad(const Tensor* inp
     return std::make_pair(mPadX, mPadY);
 }
 
-}
+} // namespace MNN

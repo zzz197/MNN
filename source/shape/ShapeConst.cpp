@@ -6,8 +6,8 @@
 //  Copyright © 2018, Alibaba Group Holding Limited
 //
 
+#include "shape/SizeComputer.hpp"
 #include "core/Macro.h"
-#include "core/SizeComputer.hpp"
 
 namespace MNN {
 class ConstComputer : public SizeComputer {
@@ -25,8 +25,11 @@ public:
         for (int i = 0; i < output->buffer().dimensions; i++) {
             output->buffer().dim[i].extent = parameter->dims()->Get(i);
         }
-
-        output->setType(parameter->dataType());
+        if (parameter->dataType() == DataType_DT_HALF) {
+            output->setType(DataType_DT_FLOAT);
+        } else {
+            output->setType(parameter->dataType());
+        }
         TensorUtils::getDescribe(output)->dimensionFormat = parameter->dataFormat();
 
         return true;

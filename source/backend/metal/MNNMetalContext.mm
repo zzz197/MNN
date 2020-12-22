@@ -8,7 +8,6 @@
 
 #import "backend/metal/MNNMetalContext.h"
 #import "core/Macro.h"
-#import "core/Macro.h"
 
 #if MNN_METAL_ENABLED
 
@@ -24,8 +23,6 @@ using namespace MNN;
 @property (strong, nonatomic) NSMutableDictionary<NSString *, id<MTLComputePipelineState>> *caches;
 @property (strong, nonatomic) NSMutableArray<id<MTLCommandBuffer>> *waitings;
 @property (strong, nonatomic) id<MTLLibrary> library;
-@property (strong, nonatomic) id<MTLHeap> sharedHeap NS_AVAILABLE_IOS(10.0);
-@property (strong, nonatomic) id<MTLHeap> privateHeap NS_AVAILABLE_IOS(10.0);
 @end
 
 @implementation MNNMetalContext
@@ -76,18 +73,6 @@ using namespace MNN;
         if (nil == _library) {
             return nil;
         }
-
-        if (@available(iOS 10.0, *)) {
-            MTLHeapDescriptor *shared = [[MTLHeapDescriptor alloc] init];
-            shared.storageMode        = MTLStorageModeShared;
-            shared.size               = 0x1000; // initial size
-            _sharedHeap               = [_device newHeapWithDescriptor:shared];
-
-            MTLHeapDescriptor *priv = [[MTLHeapDescriptor alloc] init];
-            priv.storageMode        = MTLStorageModePrivate;
-            priv.size               = 0x0800; // initial size
-            _privateHeap            = [_device newHeapWithDescriptor:priv];
-        }
     }
     return self;
 }
@@ -113,43 +98,6 @@ using namespace MNN;
 
 - (id<MTLBuffer>)newDeviceBuffer:(NSUInteger)size bytes:(const void *)bytes access:(MNN::MetalAccess)access {
     return [_device newBufferWithBytes:bytes length:size options:[self optionForAccess:access]];
-}
-
-#pragma mark heap
-- (id<MTLBuffer>)newHeapBuffer:(NSUInteger)size access:(MNN::MetalAccess)access {
-    MTLResourceOptions options = [self optionForAccess:access];
-    if (@available(iOS 10.0, *)) {
-        id<MTLHeap> heap = access == CPUTransparent ? _privateHeap : _sharedHeap;
-        if (size <= [heap maxAvailableSizeWithAlignment:1]) {
-            id<MTLBuffer> buffer = [heap newBufferWithLength:size options:options];
-            if (buffer)
-                return buffer;
-        }
-    }
-    return [_device newBufferWithLength:size options:options];
-}
-
-- (id<MTLBuffer>)newHeapBuffer:(NSUInteger)size bytes:(const void *)bytes access:(MNN::MetalAccess)access {
-    MNN_ASSERT(access != CPUReadWrite);
-    MTLResourceOptions options = [self optionForAccess:access];
-    if (@available(iOS 10.0, *)) {
-        id<MTLHeap> heap = access == CPUTransparent ? _privateHeap : _sharedHeap;
-        if (size <= [heap maxAvailableSizeWithAlignment:1]) {
-            id<MTLBuffer> buffer = [heap newBufferWithLength:size options:options];
-            if (buffer) {
-                memcpy(buffer.contents, bytes, size);
-                return buffer;
-            }
-        }
-    }
-    return [_device newBufferWithBytes:bytes length:size options:options];
-}
-
-- (void)releaseHeapBuffer:(id<MTLBuffer>)buffer {
-    if (@available(iOS 10.0, *)) {
-        if (buffer.heap)
-            [buffer makeAliasable];
-    }
 }
 
 #pragma mark enqueue
@@ -191,9 +139,17 @@ using namespace MNN;
 #endif
     return result;
 }
+- (id<MTLBlitCommandEncoder>)encoderBlit {
+    id<MTLBlitCommandEncoder> result = [_commandBuffer blitCommandEncoder];
+#if MNN_METAL_DEBUG || MNN_METAL_BENCHMARK
+    result.label = nil;
+#endif
+    return result;
+}
 
 - (MetalBandwidth)load:(NSString *)name encoder:(id<MTLComputeCommandEncoder>)encoder {
     id<MTLComputePipelineState> pipeline = [self pipelineWithName:name];
+    MNN_ASSERT(nil != pipeline);
     [encoder setComputePipelineState:pipeline];
 #if MNN_METAL_DEBUG || MNN_METAL_BENCHMARK
     if (!name) {
@@ -220,10 +176,7 @@ using namespace MNN;
 }
 
 - (void)wait {
-    NSArray *buffers = _waitings.copy;
-    [_waitings removeAllObjects];
-
-    for (id<MTLCommandBuffer> buffer in buffers) {
+    for (id<MTLCommandBuffer> buffer in _waitings) {
         if (buffer.status >= MTLCommandBufferStatusCompleted)
             continue;
 
@@ -248,6 +201,7 @@ using namespace MNN;
         }
 #endif
     }
+    [_waitings removeAllObjects];
 }
 
 static NSUInteger smallest_log2(NSUInteger integer) {
@@ -259,6 +213,83 @@ static NSUInteger smallest_log2(NSUInteger integer) {
         power++;
     }
     return power;
+}
+
+- (std::pair<MTLSize, MTLSize>)computeBestGroupAndLocal:(id<MTLComputePipelineState>) bw threads:(MTLSize)t {
+    auto local = [self computeBestGroup:bw threads:t];
+    auto globalSize = MTLSizeMake(UP_DIV(t.width, local.width), UP_DIV(t.height, local.height), UP_DIV(t.depth, local.depth));
+    return std::make_pair(globalSize, local);
+}
+
+- (MTLSize)computeBestGroup:(id<MTLComputePipelineState>) bw threads:(MTLSize)t {
+    if (bw.maxTotalThreadsPerThreadgroup > 64) {
+        auto res = MTLSizeMake(8, 8, 8);
+        int reduceNumber = 0;
+        if (t.depth < 4) {
+            res.depth = 1;
+            reduceNumber++;
+        }
+        if (t.width < 4) {
+            res.width = 1;
+            reduceNumber++;
+        }
+        if (t.height < 4) {
+            res.height = 1;
+            reduceNumber++;
+        }
+        if (reduceNumber == 0) {
+            return MTLSizeMake(4, 4, 4);
+        }
+        if (reduceNumber == 2) {
+            if (res.width > 1) {
+                res.width = 64;
+            }
+            if (res.height > 1) {
+                res.height = 64;
+            }
+            if (res.depth > 1) {
+                res.depth = 64;
+            }
+        }
+        return res;
+    }
+    auto pwarp = smallest_log2(bw.threadExecutionWidth);
+    auto px = smallest_log2(t.width), sx = (NSUInteger)ceil(log2(t.width));
+    auto py = smallest_log2(t.height), sy = (NSUInteger)ceil(log2(t.height));
+
+    // accurately match on x
+    if (px >= pwarp) {
+        return {bw.threadExecutionWidth, 1, 1};
+    }
+    // accurately match on xy
+    else if (px + py >= pwarp && sx < pwarp / 2) {
+        NSUInteger x = pow(2, px);
+        return {x, bw.threadExecutionWidth / x, 1};
+    }
+    // similarly match on x
+    else if (sx >= pwarp) {
+        return {bw.threadExecutionWidth, 1, 1};
+    }
+    // similarly match on xy
+    else if (sx + sy >= pwarp) {
+        NSUInteger x = pow(2, sx);
+        return {x, bw.threadExecutionWidth / x, 1};
+    }
+
+    // on xyz (for most shaders do not protect gid.z, z axis must be accurately match)
+    auto pz = smallest_log2(t.depth);
+    auto sz = pz;
+    if (px + py + pz >= pwarp) {
+        NSUInteger x = pow(2, px), y = pow(2, py);
+        return {x, y, bw.threadExecutionWidth / x / y};
+    } else if (sx + sy + sz >= pwarp) {
+        NSUInteger x = pow(2, sx), z = pow(2, MIN(sz, pwarp - sx));
+        return {x, bw.threadExecutionWidth / x / z, z};
+    } else {
+        NSUInteger z = pow(2, sz);
+        return {t.width, t.height, z};
+    }
+
 }
 
 - (MTLSize)threadsPerGroupWithThreads:(MTLSize)t bandwidth:(MetalBandwidth)bw {

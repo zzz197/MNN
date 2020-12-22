@@ -14,6 +14,13 @@ def usage():
     print("    [--prototxt PROTOTXT]")
     print("    [--MNNModel MNNMODEL]")
     print("    [--fp16 {True,False}]") 
+    print("    [--weightQuantBits {num of bits for weight-only-quant, default:0, which means no quant}]")
+    print("    [--weightQuantAsymmetric {True,False use asymmetric quant method for weight-only-quant, \
+                the default method is symmetric quant, which is compatible with old MNN versions. \
+                you can set this flag to True use asymmetric quant method to improve accuracy of the weight-quant model in some cases, \
+                but asymmetric quant model cannot run on old MNN versions. You will need to upgrade MNN to new version to solve this problem. \
+                default: False, which means using SYMMETRIC quant method}]")
+    print("    [--compressionParamsFile COMPRESSION_PARAMS_PATH]")
 
 def main():
     """ main funcion """
@@ -32,6 +39,12 @@ def main():
         help="{True,False}\
                Boolean to change the mnn usage. If True, the output\
                model save data in half_float type")
+    parser.add_argument("--weightQuantBits", type=int, default=0)
+    parser.add_argument("--weightQuantAsymmetric", type=bool, default=False)
+    parser.add_argument("--compressionParamsFile", type=str, default=None,
+        help="The path of model compression file that stores the int8 calibration \
+              table for quantization or auxiliary parameters for sparsity.")
+
     TF = 0
     CAFFE = 1
     ONNX = 2
@@ -65,8 +78,15 @@ def main():
     else:
         ### just cheat with a not exist name ###
         args.prototxt = "NA.mnn"
+    if args.compressionParamsFile is not None and \
+           not os.path.exists(args.compressionParamsFile):
+        print("Compression params file not exist.")
+        return -1
+    if args.compressionParamsFile is None:
+        args.compressionParamsFile = ""
+
     Tools.mnnconvert(args.MNNModel, args. modelFile, framework_type,\
-        args.fp16, args.prototxt)
+        args.fp16, args.prototxt, args.weightQuantBits, args.weightQuantAsymmetric, args.compressionParamsFile)
     return 0
 if __name__ == "__main__":
     main()

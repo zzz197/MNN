@@ -28,7 +28,7 @@ class OnnxConstantOfShapeTransform : public OnnxExtraManager::Transform {
 public:
     virtual EXPRP onExecute(EXPRP expr) const override {
         auto inputs = expr->inputs();
-        MNN_CHECK(1 == inputs.size(), "Onnx ConstantOfShape should have one input!");
+        MNN_THROW_CHECK(1 == inputs.size(), "Onnx ConstantOfShape should have one input!");
 
         std::unique_ptr<OpT> mnnFill(new OpT);
         mnnFill->name                   = expr->name();
@@ -65,7 +65,7 @@ public:
                 break; // Break out of the loop if value has been processed.
             }
         }
-        auto const_shape = _Const(static_cast<const void *>(tensor_data.data()), tensor_shape, NHWC, data_type);
+        auto const_shape = _Const(static_cast<const void *>(tensor_data.data()), tensor_shape, NCHW, data_type);
         return Expr::create(mnnFill.get(), {inputs[0], const_shape});
     }
 };

@@ -6,32 +6,27 @@
 //  Copyright © 2018, Alibaba Group Holding Limited
 //
 
-#include <MNN/Tensor.hpp>
 #include <complex.h>
 #include <string.h>
+#include <MNN/Tensor.hpp>
+#include "MNN_generated.h"
 #include "core/Backend.hpp"
 #include "core/MNNMemoryUtils.h"
-#include "MNN_generated.h"
 #include "core/Macro.h"
 #include "core/TensorUtils.hpp"
-#include "half.hpp"
-
-#define MAX_TENSOR_DIM 6
 
 using namespace std;
 
 namespace MNN {
 Tensor::Tensor(int dimSize, DimensionType type) {
-    MNN_ASSERT(dimSize <= MAX_TENSOR_DIM);
-
-    mBuffer.dim        = new halide_dimension_t[MAX_TENSOR_DIM];
+    MNN_ASSERT(dimSize <= MNN_MAX_TENSOR_DIM);
+    mDescribe          = new InsideDescribe;
     mBuffer.dimensions = dimSize;
     mBuffer.type       = halide_type_of<float>();
     mBuffer.device     = 0;
     mBuffer.host       = nullptr;
+    mBuffer.dim        = &mDescribe->dims[0];
 
-    mDescribe                   = new InsideDescribe;
-    mDescribe->dimensionStorage = mBuffer.dim;
     switch (type) {
         case CAFFE:
             mDescribe->dimensionFormat = MNN_DATA_FORMAT_NCHW;
@@ -51,17 +46,16 @@ Tensor::Tensor(const Tensor* tensor, DimensionType type, bool allocMemory) {
     MNN_ASSERT(tensor != nullptr);
 
     auto buffer        = tensor->buffer();
-    mBuffer.dim        = new halide_dimension_t[MAX_TENSOR_DIM];
+    mDescribe          = new InsideDescribe;
     mBuffer.dimensions = buffer.dimensions;
     mBuffer.type       = buffer.type;
     mBuffer.device     = 0;
     mBuffer.host       = nullptr;
+    mBuffer.dim        = &mDescribe->dims[0];
+
     for (int i = 0; i < buffer.dimensions; ++i) {
-        mBuffer.dim[i].min    = 0;
         mBuffer.dim[i].extent = buffer.dim[i].extent;
     }
-    mDescribe                   = new InsideDescribe;
-    mDescribe->dimensionStorage = mBuffer.dim;
     switch (type) {
         case CAFFE:
             mDescribe->dimensionFormat = MNN_DATA_FORMAT_NCHW;
@@ -106,37 +100,38 @@ Tensor::Tensor(const Tensor* tensor, DimensionType type, bool allocMemory) {
     if (allocMemory) {
         auto memorySize = size();
         if (memorySize > 0) {
-            mDescribe->ownHost = true;
-            mBuffer.host       = (uint8_t*)MNNMemoryAllocAlign(size(), MNN_MEMORY_ALIGN_DEFAULT);
+            mDescribe->memoryType = Tensor::InsideDescribe::MEMORY_HOST;
+            mBuffer.host          = (uint8_t*)MNNMemoryAllocAlign(size(), MNN_MEMORY_ALIGN_DEFAULT);
             MNN_ASSERT(mBuffer.host != nullptr);
         }
     }
 }
 
 Tensor::~Tensor() {
-    if (nullptr != mDescribe->handleFreeFunction) {
-        MNN_ASSERT(mBuffer.type.code == halide_type_handle);
+    if (mBuffer.type.code == halide_type_handle) {
         auto handles = (void**)mBuffer.host;
         for (int i = 0; i < elementSize(); ++i) {
             if (nullptr != handles[i]) {
-                mDescribe->handleFreeFunction(handles[i]);
+                mDescribe->extra.handleFreeFunction(handles[i]);
             }
         }
     }
-    if (mDescribe->ownHost) {
-        MNNMemoryFreeAlign(mBuffer.host);
+    if (mDescribe->memoryType == InsideDescribe::MEMORY_HOST) {
+        if (nullptr != mBuffer.host) {
+            MNNMemoryFreeAlign(mBuffer.host);
+        }
     }
-    delete[] mDescribe->dimensionStorage;
     delete mDescribe;
 }
 
 Tensor* Tensor::createDevice(const std::vector<int>& dims, halide_type_t type, DimensionType dimType) {
-    Tensor shapeTensor((int)dims.size(), dimType);
+    auto shapeTensor = new Tensor((int)dims.size(), dimType);
     for (int i = 0; i < dims.size(); ++i) {
-        shapeTensor.setLength(i, dims[i]);
+        shapeTensor->setLength(i, dims[i]);
     }
-    shapeTensor.buffer().type = type;
-    return new Tensor(&shapeTensor, dimType, false);
+    shapeTensor->buffer().type = type;
+    TensorUtils::setLinearLayout(shapeTensor);
+    return shapeTensor;
 }
 
 Tensor* Tensor::create(const std::vector<int>& dims, halide_type_t type, void* userData, DimensionType dimType) {
@@ -206,9 +201,8 @@ Tensor::HandleDataType Tensor::getHandleDataType() const {
     if (halide_type_handle != mBuffer.type.code) {
         return HANDLE_NONE;
     }
-    return mDescribe->handleType;
+    return HANDLE_STRING;
 }
-
 void Tensor::setType(int type) {
     switch (type) {
         case DataType_DT_DOUBLE:
@@ -242,8 +236,7 @@ void Tensor::setType(int type) {
             break;
         case DataType_DT_STRING:
             mBuffer.type                  = halide_type_t(halide_type_handle, sizeof(void*) * 8);
-            mDescribe->handleType         = HANDLE_STRING;
-            mDescribe->handleFreeFunction = (void (*)(void*))::free;
+            mDescribe->extra.handleFreeFunction = (void (*)(void*))::free;
             break;
 
         default:
@@ -260,20 +253,6 @@ std::vector<int> Tensor::shape() const {
     }
     return result;
 }
-
-int Tensor::size() const {
-    auto dataSize = this->buffer().type.bytes();
-    MNN_ASSERT(dataSize >= 1);
-    for (int i = 0; i < this->buffer().dimensions; i++) {
-        int currentDimSize = mBuffer.dim[i].extent;
-        if (mDescribe->dimensionFormat == MNN_DATA_FORMAT_NC4HW4 && 1 == i) {
-            currentDimSize = ALIGN_UP4(currentDimSize);
-        }
-        dataSize *= currentDimSize;
-    }
-    return dataSize;
-}
-
 template <typename T>
 void printData(const Tensor* tensor, const void* data, const char* fmt) {
     const T* buffer = (const T*)data;
@@ -354,7 +333,6 @@ void printData(const Tensor* tensor, const void* data, const char* fmt) {
         }
     }
 }
-
 void Tensor::print() const {
     // print dimensions
     MNN_PRINT("====== Tensor %p ======", this);
@@ -379,31 +357,19 @@ void Tensor::print() const {
             printData<int16_t>(printee, buffer, "%d, ");
         } else if (printee->getType().bits == 32) { // int32
             printData<int32_t>(printee, buffer, "%d, ");
-        } else if (printee->getType().bits == 64) { // int64
-            printData<int64_t>(printee, buffer, "%ld, ");
         } else {
             MNN_PRINT("\nunsupported data type");
         }
     } else if (printee->getType().code == halide_type_uint) {
         if (printee->getType().bits == 8) { // uint8
             printData<uint8_t>(printee, buffer, "%d, ");
-        } else if (printee->getType().bits == 16) { // uint16
-            printData<uint16_t>(printee, buffer, "%d, ");
-        } else if (printee->getType().bits == 32) { // uint32
-            printData<uint32_t>(printee, buffer, "%d, ");
-        } else if (printee->getType().bits == 64) { // uint64
-            printData<uint64_t>(printee, buffer, "%ld, ");
         } else {
             MNN_PRINT("\nunsupported data type");
         }
     } else if (printee->getType().code == halide_type_float) {
         if (printee->getType().bits == 32) { // float32
             printData<float>(printee, buffer, "%f, ");
-        } else if (printee->getType().bits == 16){
-            // fp16
-            printData<half_float::half>(printee, buffer, "%f, ");
-        }
-        else {
+        } else {
             MNN_PRINT("\nunsupported data type\n");
         }
     } else {
@@ -426,6 +392,19 @@ void Tensor::printShape() const {
         MNN_PRINT("%d, ", this->length(i));
     }
     MNN_PRINT("\n");
+}
+
+int Tensor::size() const {
+    auto dataSize = mBuffer.type.bytes();
+    MNN_ASSERT(dataSize >= 1);
+    for (int i = 0; i < this->buffer().dimensions; i++) {
+        int currentDimSize = mBuffer.dim[i].extent;
+        if (mDescribe->dimensionFormat == MNN_DATA_FORMAT_NC4HW4 && 1 == i) {
+            currentDimSize = ALIGN_UP4(currentDimSize);
+        }
+        dataSize *= currentDimSize;
+    }
+    return dataSize;
 }
 
 } // namespace MNN

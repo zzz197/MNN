@@ -13,8 +13,9 @@
 #include <memory>
 #include <vector>
 #include "core/NonCopyable.hpp"
-#include "backend/vulkan/component/VulkanDevice.hpp"
-#include "backend/vulkan/vulkan/vulkan_wrapper.h"
+#include "component/VulkanDevice.hpp"
+#include "vulkan/vulkan_wrapper.h"
+#include "core/BufferAllocator.hpp"
 
 namespace MNN {
 
@@ -43,10 +44,12 @@ private:
 class VulkanMemoryPool : public NonCopyable {
 public:
     VulkanMemoryPool(const VulkanDevice& dev, bool permitFp16);
+    VulkanMemoryPool(const VulkanMemoryPool* parent);
     virtual ~VulkanMemoryPool();
 
-    const VulkanMemory* allocMemory(const VkMemoryRequirements& requirements, VkFlags extraMask, bool seperate = false);
-    void returnMemory(const VulkanMemory* memory, bool clean = false);
+    // VulkanMemory* , offset
+    std::pair<void*, int> allocMemory(const VkMemoryRequirements& requirements, VkFlags extraMask, bool seperate = false);
+    void returnMemory(std::pair<void*, int> memory);
 
     // Free Unuseful Memory
     void clear();
@@ -61,15 +64,25 @@ public:
     // Return MB
     float computeSize() const;
 
+    // For buffer fast alloc
+    VkBuffer allocBuffer(size_t size, VkBufferUsageFlags flags, VkSharingMode shared);
+    void returnBuffer(VkBuffer buffer, size_t size, VkBufferUsageFlags flags, VkSharingMode shared);
+
+    // For image fast alloc
+    VkImage allocImage(const std::tuple<VkImageType, uint32_t, uint32_t, uint32_t, VkFormat>& info);
+    void returnImage(VkImage dst, std::tuple<VkImageType, uint32_t, uint32_t, uint32_t, VkFormat>&& info);
 private:
-    std::map<const VulkanMemory*, std::shared_ptr<VulkanMemory>> mAllBuffers;
-
     // MemoryTypeIndex, Size, Memory
-    std::vector<std::multimap<VkDeviceSize, const VulkanMemory*>> mFreeBuffers;
+    std::vector<std::shared_ptr<BufferAllocator>> mAllocators;
 
-    VkPhysicalDeviceMemoryProperties mPropty;
     const VulkanDevice& mDevice;
     bool mPermitFp16 = false;
+    
+    // For buffer alloc, key: size - usage
+    std::multimap<std::tuple<size_t, VkBufferUsageFlags, VkSharingMode>, VkBuffer> mFreeVkBuffers;
+    
+    // For Image alloc
+    std::multimap<std::tuple<VkImageType,uint32_t,uint32_t,uint32_t,VkFormat>, VkImage> mFreeImages;
 };
 } // namespace MNN
 #endif /* VulkanMemoryPool_hpp */

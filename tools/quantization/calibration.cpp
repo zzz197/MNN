@@ -47,15 +47,27 @@ Calibration::Calibration(MNN::NetT* model, uint8_t* modelBuffer, const int buffe
     {
         if (picObj.HasMember("format")) {
             auto format = picObj["format"].GetString();
-            static std::map<std::string, ImageFormat> formatMap{{"BGR", BGR}, {"RGB", RGB}, {"GRAY", GRAY}};
+            static std::map<std::string, ImageFormat> formatMap{{"BGR", BGR}, {"RGB", RGB}, {"GRAY", GRAY}, {"RGBA", RGBA}, {"BGRA", BGRA}};
             if (formatMap.find(format) != formatMap.end()) {
                 config.destFormat = formatMap.find(format)->second;
             }
         }
     }
 
-    if (config.destFormat == GRAY) {
-        channles = 1;
+    switch (config.destFormat) {
+        case GRAY:
+            channles = 1;
+            break;
+        case RGB:
+        case BGR:
+            channles = 3;
+            break;
+        case RGBA:
+        case BGRA:
+            channles = 4;
+            break;
+        default:
+            break;
     }
 
     config.sourceFormat = RGBA;
@@ -132,15 +144,12 @@ void Calibration::_initMNNSession(const uint8_t* modelBuffer, const int bufferSi
         _inputTensorDims[1] = _height;
         _inputTensorDims[2] = _width;
         _inputTensorDims[3] = channels;
-    } else if (inputTensorDataFormat == MNN::MNN_DATA_FORMAT_NC4HW4) {
+    } else {
         _inputTensorDims[0] = 1;
         _inputTensorDims[1] = channels;
         _inputTensorDims[2] = _height;
         _inputTensorDims[3] = _width;
-    } else {
-        DLOG(ERROR) << "Input Data Format ERROR!";
     }
-
     if (_featureQuantizeMethod == "KL") {
         _interpreter->resizeTensor(_inputTensor, _inputTensorDims);
         _interpreter->resizeSession(_session);
